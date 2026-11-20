@@ -2,11 +2,10 @@
   "version": 2,
   "buildCommand": "npm run --prefix frontend build",
   "outputDirectory": "frontend/dist",
-  "installCommand": "npm install && npm install --prefix frontend",
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/api/index.js"
+      "destination": "https://mednexa-5jk0.onrender.com/api/$1"
     },
     {
       "source": "/(.*)",
