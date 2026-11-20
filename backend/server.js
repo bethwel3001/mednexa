@@ -1577,7 +1577,11 @@ app.post('/api/v1/voice/command', (req, res) => {
   });
 });
 
-// Start Server
-app.listen(PORT, () => {
-  console.log(`[MedNexa API] Running on http://127.0.0.1:${PORT}`);
-});
+// Start Server if not run in serverless environment
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`[MedNexa API] Running on http://127.0.0.1:${PORT}`);
+  });
+}
+
+export default app;

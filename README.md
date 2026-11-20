@@ -226,9 +226,45 @@ The frontend application will be accessible at `http://localhost:5173`.
 ### 5. Production Build Verification
 To ensure all TypeScript typings and bundling passes cleanly:
 ```bash
-cd frontend
 npm run build
 ```
+
+---
+
+## Deployment Guide
+
+The repository is configured to support both single-project unified deployment and split microservice deployment.
+
+### Option A: Unified Full-Stack Vercel Deployment (Recommended)
+
+The repository includes a root `vercel.json` and `api/index.js` serverless bridge that bundles both the React frontend and Express backend into a single Vercel deployment:
+
+1. Import the repository in Vercel (`https://vercel.com/new`).
+2. Leave **Root Directory** as `./` (do not select `frontend` or `backend`).
+3. Vercel automatically detects `vercel.json`:
+   - Builds frontend assets to `frontend/dist`.
+   - Routes `/api/*` requests to the Express serverless function (`api/index.js`).
+   - Serves the frontend application on all other paths.
+4. Set Environment Variables in your Vercel project settings:
+   - `JWT_SECRET`: A secure random string.
+   - `MSINGI_API_KEY`: Your MsingiAI voice key.
+5. Deploy. Both frontend and backend will be accessible on the exact same domain (e.g., `https://mednexa.vercel.app`), avoiding cross-origin (CORS) configuration.
+
+### Option B: Split Service Deployment (Frontend on Vercel, Backend on Render/Railway)
+
+If you prefer continuous Node.js server execution:
+
+1. **Deploy Backend (e.g., on Render or Railway)**:
+   - Connect the repository and set **Root Directory** to `backend`.
+   - Build Command: `npm install`
+   - Start Command: `node server.js`
+   - Copy the published backend URL (e.g., `https://mednexa-api.onrender.com`).
+2. **Deploy Frontend (on Vercel)**:
+   - Connect the repository and set **Root Directory** to `frontend`.
+   - Build Command: `npm run build`
+   - Output Directory: `dist`
+   - Add Environment Variable:
+     - `VITE_API_BASE_URL`: `https://mednexa-api.onrender.com/api/v1`
 
 ---
 
